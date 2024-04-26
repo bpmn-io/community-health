@@ -20,7 +20,7 @@ jobs:
       id: report
       run: echo "payload=$(node ./bin/cli.js --format=slack)" >> "$GITHUB_OUTPUT"
     - name: Post to a Slack channel
-      uses: slackapi/slack-github-action@v1.15.0
+      uses: slackapi/slack-github-action@v1.26.0
       with:
         channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         payload: ${{ steps.report.outputs.payload }}
