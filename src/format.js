@@ -10,8 +10,15 @@ export function formatReport(report, format) {
 
 function getSlackMessage(report) {
   const message = {
-    text: 'Community health report',
+    unfurl_links: false,
     blocks: [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: 'Community health report'
+        }
+      },
       {
         type: 'header',
         text: {
@@ -19,13 +26,7 @@ function getSlackMessage(report) {
           text: 'Forum'
         }
       },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: getForumMessage(report.forum)
-        }
-      },
+      getForumMessage(report.forum),
       {
         type: 'header',
         text: {
@@ -33,13 +34,7 @@ function getSlackMessage(report) {
           text: 'Taskboard'
         }
       },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: getTaskboardMessage(report.taskboard)
-        }
-      }
+      getTaskboardMessage(report.taskboard)
     ]
   };
 
@@ -48,40 +43,145 @@ function getSlackMessage(report) {
 
 function getForumMessage(forum) {
   if (forum.topics.length === 0) {
-    return 'Forum is clean 🤩';
+    return {
+      type: 'section',
+      text: {
+        type: 'plain-text',
+        text: 'Forum is clean 🤩'
+      }
+    };
   }
 
-  return `
-Found ${forum.topics.length} unanswered topic(s):
-${forum.topics.map(topic => `- <${topic.url}|${topic.title}>`).join('\n')}
-  `;
+  return {
+    type: 'rich_text',
+    elements: [
+      {
+        type: 'rich_text_section',
+        elements: [
+          {
+            type: 'text',
+            text: `Found ${forum.topics.length} unanswered topic(s):\n`
+          }
+        ]
+      },
+      {
+        type: 'rich_text_list',
+        style: 'bullet',
+        elements: forum.topics.map(topic => ({
+          type: 'rich_text_section',
+          elements: [
+            {
+              type: 'link',
+              text: topic.title,
+              url: topic.url
+            }
+          ]
+        }))
+      }
+    ]
+  };
 }
 
 function getTaskboardMessage(taskboard) {
   if (!taskboard.inbox.length && !taskboard.needsReview.length) {
-    return 'Taskboard is clean 🤩';
+    return {
+      type: 'section',
+      text: {
+        type: 'plain-text',
+        text: 'Taskboard is clean 🤩'
+      }
+    };
   }
 
-  return `${getInboxMessage(taskboard.inbox)}
-${getNeedsReviewMessage(taskboard.needsReview)}`;
+  return {
+    type: 'rich_text',
+    elements: [
+      ...getInboxMessage(taskboard.inbox),
+      ...getNeedsReviewMessage(taskboard.needsReview)
+    ]
+  };
 }
 
 function getInboxMessage(inbox) {
   if (inbox.length === 0) {
-    return 'Inbox is clean 🤩';
+    return [
+      {
+        type: 'rich_text_section',
+        elements: [
+          {
+            type: 'text',
+            text: 'Inbox is clean 🤩'
+          }
+        ]
+      }
+    ];
   }
 
-  return `Found ${inbox.length} issue(s) in the inbox:
-${inbox.map(issue => `- <${issue.url}|${issue.title}>`).join('\n')}
-`;
+  return [
+    {
+      type: 'rich_text_section',
+      elements: [
+        {
+          type: 'text',
+          text: `Found ${inbox.length} issue(s) in the inbox:\n`
+        }
+      ]
+    },
+    {
+      type: 'rich_text_list',
+      style: 'bullet',
+      elements: inbox.map(inbox => ({
+        type: 'rich_text_section',
+        elements: [
+          {
+            type: 'link',
+            text: inbox.title,
+            url: inbox.url
+          }
+        ]
+      }))
+    }
+  ];
 }
 
 function getNeedsReviewMessage(needsReview) {
   if (needsReview.length === 0) {
-    return 'Needs Review is clean 🤩';
+    return [
+      {
+        type: 'rich_text_section',
+        elements: [
+          {
+            type: 'text',
+            text: 'Needs Review is clean 🤩'
+          }
+        ]
+      }
+    ];
   }
 
-  return `Found ${needsReview.length} issue(s) in Needs Review:
-${needsReview.map(issue => `- <${issue.url}|${issue.title}>`).join('\n')}
-`;
+  return [
+    {
+      type: 'rich_text_section',
+      elements: [
+        {
+          type: 'text',
+          text: `Found ${needsReview.length} issue(s) that need review:\n`
+        }
+      ]
+    },
+    {
+      type: 'rich_text_list',
+      style: 'bullet',
+      elements: needsReview.map(issue => ({
+        type: 'rich_text_section',
+        elements: [
+          {
+            type: 'link',
+            text: issue.title,
+            url: issue.url
+          }
+        ]
+      }))
+    }
+  ];
 }
