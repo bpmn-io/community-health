@@ -1,0 +1,28 @@
+name: SEND_MESSAGE
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 9 * * *'
+jobs:
+  Post_message:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Generate report
+      id: report
+      run: echo "payload=$(node ./bin/cli.js --format=slack)" >> "$GITHUB_OUTPUT"
+    - name: Post to a Slack channel
+      uses: slackapi/slack-github-action@v1.15.0
+      with:
+        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+        payload: ${{ steps.report.outputs.payload }}
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
