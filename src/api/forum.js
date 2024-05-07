@@ -9,10 +9,10 @@ export async function getForumReport({ baseUrl }) {
     throw new Error(`Failed to fetch forum data: ${res.statusText}`);
   }
 
-  const ra = await res.json();
+  const parsed = await res.json();
 
   const report = {
-    topics: ra.topics.map(topic => ({
+    topics: (parsed.topics || []).map(topic => ({
       id: topic.id,
       title: topic.title,
       url: getTopicUrl(baseUrl, topic)
