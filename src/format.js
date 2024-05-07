@@ -46,7 +46,7 @@ function getForumMessage(forum) {
     return {
       type: 'section',
       text: {
-        type: 'plain-text',
+        type: 'plain_text',
         text: 'Forum is clean 🤩'
       }
     };
@@ -87,7 +87,7 @@ function getTaskboardMessage(taskboard) {
     return {
       type: 'section',
       text: {
-        type: 'plain-text',
+        type: 'plain_text',
         text: 'Taskboard is clean 🤩'
       }
     };
