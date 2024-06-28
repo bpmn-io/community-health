@@ -9,6 +9,8 @@ export function formatReport(report, format) {
 }
 
 function getSlackMessage(report) {
+
+  /** @type {import('@slack/bolt')*/
   const message = {
     unfurl_links: false,
     blocks: [

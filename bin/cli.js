@@ -2,7 +2,7 @@
 
 import { parseArgs } from 'node:util';
 
-import { getReport } from '../src/app.js';
+import { getReport } from '../src/core/app.js';
 
 run();
 

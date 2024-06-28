@@ -3,7 +3,7 @@
 
 # community-health
 
-Get report on community health.
+Get report on community health. Use Slack application to receive reports in the workspace.
 
 ## Installation
 
@@ -12,6 +12,22 @@ npm install --global @bpmn-io/community-health
 ```
 
 ## Usage
+
+### Slack app
+
+Slack application expects `/community-health` slash command to generate the report.
+
+Configure `SLACK_SIGNING_SECRET`, `SLACK_BOT_TOKEN`, `PORT` as environment variables. Optionally, configure `LOG_LEVEL`.
+
+Run:
+
+```sh
+npm start
+```
+
+### CLI
+
+Run:
 
 ```sh
 community-health
