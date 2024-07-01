@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { getForumReport } from '../../src/api/forum.js';
+import { getForumReport } from '../../src/core/api/forum.js';
 
 import { createServer } from '../helper.js';
 
