@@ -12,12 +12,12 @@ describe('api/forum', function() {
 
   let server;
 
-  beforeEach(() => {
+  beforeEach(function() {
     server = createServer();
     return server.start();
   });
 
-  afterEach(() => {
+  afterEach(function() {
     server.stop();
   });
 
