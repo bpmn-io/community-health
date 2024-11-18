@@ -18,11 +18,14 @@ jobs:
       run: npm ci
     - name: Generate report
       id: report
-      run: echo "payload=$(node ./bin/cli.js --format=slack)" >> "$GITHUB_OUTPUT"
+      run: echo "message=$(node ./bin/cli.js --format=slack)" >> "$GITHUB_OUTPUT"
     - name: Post to a Slack channel
-      uses: slackapi/slack-github-action@v1.26.0
+      uses: slackapi/slack-github-action@v2.0.0
       with:
-        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-        payload: ${{ steps.report.outputs.payload }}
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        method: chat.postMessage
+        token: ${{ secrets.SLACK_BOT_TOKEN }}
+        payload: |
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+          text: Community health report
+          blocks: ${{ toJson(fromJson(steps.report.outputs.message).blocks) }}
+          unfurl_links: ${{ fromJson(steps.report.outputs.message).unfurl_links }}
