@@ -27,5 +27,5 @@ jobs:
         payload: |
           channel: ${{ secrets.SLACK_CHANNEL_ID }}
           text: Community health report
-          blocks: ${{ fromJson(steps.report.outputs.message).blocks }}
+          blocks: ${{ toJson(fromJson(steps.report.outputs.message).blocks) }}
           unfurl_links: ${{ fromJson(steps.report.outputs.message).unfurl_links }}
