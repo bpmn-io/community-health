@@ -31,7 +31,7 @@
     "@babel/eslint-parser": "^7.28.5",
     "@babel/plugin-syntax-import-attributes": "^7.27.1",
     "chai": "^6.2.1",
-    "eslint": "^9.39.1",
+    "eslint": "^10.0.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
     "mocha": "^11.7.5"
   },
