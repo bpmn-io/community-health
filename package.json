@@ -39,6 +39,6 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@slack/bolt": "^4.6.0"
+    "@slack/bolt": "^5.0.0"
   }
 }
